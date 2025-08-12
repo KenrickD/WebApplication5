@@ -20,7 +20,8 @@
                 </div>
             </div>
             <div class="card-body p-4">
-                <form id="otpForm">
+                @using (Html.BeginForm("Update", "OTPSetting", FormMethod.Post, new { id = "otpForm" }))
+                {
                     @Html.AntiForgeryToken()
                     <div class="table-responsive">
                         <table class="table table-borderless">
@@ -48,32 +49,20 @@
                                 {
                                     <tr class="border-bottom">
                                         <td class="align-middle py-3">
-                                            <input type="hidden" name="[@i].OTPId" value="@Model[i].OTPId" />
-                                            <input type="hidden" name="[@i].OTPAction" value="@Model[i].OTPAction" />
+                                            @Html.HiddenFor(m => m[i].OTPId)
+                                            @Html.HiddenFor(m => m[i].OTPAction)
                                             <span class="text-muted">@Model[i].OTPAction</span>
                                         </td>
                                         <td class="align-middle py-3">
                                             <div class="row">
                                                 <div class="col-6 text-center">
                                                     <div class="form-check d-inline-block">
-                                                        <input type="checkbox"
-                                                               name="[@i].Email"
-                                                               value="true"
-                                                               @(Model[i].Email ? "checked" : "")
-                                                               class="form-check-input"
-                                                               style="transform: scale(1.2);">
-                                                        <input type="hidden" name="[@i].Email" value="false" />
+                                                        @Html.CheckBoxFor(m => m[i].Email, new { @class = "form-check-input", style = "transform: scale(1.2);" })
                                                     </div>
                                                 </div>
                                                 <div class="col-6 text-center">
                                                     <div class="form-check d-inline-block">
-                                                        <input type="checkbox"
-                                                               name="[@i].Whatsapp"
-                                                               value="true"
-                                                               @(Model[i].Whatsapp ? "checked" : "")
-                                                               class="form-check-input"
-                                                               style="transform: scale(1.2);">
-                                                        <input type="hidden" name="[@i].Whatsapp" value="false" />
+                                                        @Html.CheckBoxFor(m => m[i].Whatsapp, new { @class = "form-check-input", style = "transform: scale(1.2);" })
                                                     </div>
                                                 </div>
                                             </div>
@@ -93,7 +82,7 @@
                             <i class="fas fa-refresh me-1"></i>Refresh
                         </button>
                     </div>
-                </form>
+                }
             </div>
         </div>
     </div>
@@ -101,25 +90,19 @@
 
 <script>
     function updateWithEF() {
-        submitForm('@Url.Action("Update", "OTPSetting")');
+        document.getElementById('otpForm').action = '@Url.Action("Update", "OTPSetting")';
+        document.getElementById('otpForm').submit();
     }
 
     function updateWithSQL() {
-        submitForm('@Url.Action("UpdateWithSQL", "OTPSetting")');
-    }
-
-    function submitForm(actionUrl) {
-        const form = document.getElementById('otpForm');
-        form.action = actionUrl;
-        form.method = 'POST';
-        form.submit();
+        document.getElementById('otpForm').action = '@Url.Action("UpdateWithSQL", "OTPSetting")';
+        document.getElementById('otpForm').submit();
     }
 
     function refreshSettings() {
         window.location.reload();
     }
 
-    // Auto-dismiss toasts after 5 seconds
     document.addEventListener('DOMContentLoaded', function() {
         const toasts = document.querySelectorAll('.toast');
         toasts.forEach(function(toast) {

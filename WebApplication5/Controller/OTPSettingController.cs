@@ -56,7 +56,6 @@ namespace WebApplication5.Controllers
 
             try
             {
-                // Option 1: Using Entity Framework (existing approach)
                 await UpdateUsingEntityFramework(otpSettings);
 
                 TempData["SuccessMessage"] = "OTP settings updated successfully!";
@@ -83,7 +82,6 @@ namespace WebApplication5.Controllers
 
             try
             {
-                // Option 2: Using direct SQL execution
                 await UpdateUsingDirectSQL(otpSettings);
 
                 TempData["SuccessMessage"] = "OTP settings updated successfully using SQL!";
@@ -114,7 +112,6 @@ namespace WebApplication5.Controllers
             }
         }
 
-        // Private helper methods
         private async Task UpdateUsingEntityFramework(List<OTPSetting> otpSettings)
         {
             foreach (var setting in otpSettings)
