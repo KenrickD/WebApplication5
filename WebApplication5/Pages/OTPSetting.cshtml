@@ -1,0 +1,96 @@
+﻿@page
+@model WebApplication5.Pages.OTPSettingModel
+@{
+    ViewData["Title"] = "OTP Setting";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 text-muted">
+                    <i class="fas fa-shield-alt me-2"></i>OTP Setting
+                </h5>
+                <button type="button" class="btn-close" aria-label="Close"></button>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr class="border-bottom">
+                                    <th class="text-muted fw-normal">Action</th>
+                                    <th class="text-center text-muted fw-normal">Channel Type</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th class="text-center">
+                                        <div class="row">
+                                            <div class="col-6 text-center">
+                                                <small class="text-muted">Email</small>
+                                            </div>
+                                            <div class="col-6 text-center">
+                                                <small class="text-muted">Whatsapp</small>
+                                            </div>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.OTPSettings.Count; i++)
+                                {
+                                    <tr class="border-bottom">
+                                        <td class="align-middle py-3">
+                                            <input type="hidden" asp-for="OTPSettings[i].OTPId" />
+                                            <input type="hidden" asp-for="OTPSettings[i].OTPAction" />
+                                            <span class="text-muted">@Model.OTPSettings[i].OTPAction</span>
+                                        </td>
+                                        <td class="align-middle py-3">
+                                            <div class="row">
+                                                <div class="col-6 text-center">
+                                                    <div class="form-check d-inline-block">
+                                                        <input type="checkbox"
+                                                               asp-for="OTPSettings[i].Email"
+                                                               class="form-check-input"
+                                                               style="transform: scale(1.2);">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 text-center">
+                                                    <div class="form-check d-inline-block">
+                                                        <input type="checkbox"
+                                                               asp-for="OTPSettings[i].Whatsapp"
+                                                               class="form-check-input"
+                                                               style="transform: scale(1.2);">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fas fa-save me-2"></i>Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Add some interactive feedback
+        $(document).ready(function() {
+            $('input[type="checkbox"]').change(function() {
+                $(this).closest('tr').addClass('table-warning').delay(200).queue(function() {
+                    $(this).removeClass('table-warning').dequeue();
+                });
+            });
+        });
+    </script>
+}

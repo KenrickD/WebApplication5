@@ -20,3 +20,92 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+}
+
+.card-header {
+    background-color: #f8f9fa !important;
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem 1.5rem;
+}
+
+.table-borderless td,
+.table-borderless th {
+    border: none;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.form-check-input {
+    border: 2px solid #dee2e6;
+}
+
+    .form-check-input:focus {
+        border-color: #86b7fe;
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+.toast-container {
+    z-index: 1055;
+}
+
+.toast {
+    min-width: 300px;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.form-check-input {
+    transition: all 0.15s ease-in-out;
+}
+
+    .form-check-input:hover {
+        border-color: #86b7fe;
+    }
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    transition: box-shadow 0.3s ease;
+}
+
+.btn-close {
+    opacity: 0.5;
+}
+
+    .btn-close:hover {
+        opacity: 1;
+    }
+
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem !important;
+    }
+
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
