@@ -1,5 +1,4 @@
-﻿@page
-@model WebApplication5.Pages.OTPSettingModel
+﻿@model List<Domain.Models.OTPSetting>
 @{
     ViewData["Title"] = "OTP Setting";
 }
@@ -11,10 +10,18 @@
                 <h5 class="mb-0 text-muted">
                     <i class="fas fa-shield-alt me-2"></i>OTP Setting
                 </h5>
-                <button type="button" class="btn-close" aria-label="Close"></button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="updateWithEF()">
+                        <i class="fas fa-save me-1"></i>Update (EF)
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-success" onclick="updateWithSQL()">
+                        <i class="fas fa-database me-1"></i>Update (SQL)
+                    </button>
+                </div>
             </div>
             <div class="card-body p-4">
-                <form method="post">
+                <form id="otpForm">
+                    @Html.AntiForgeryToken()
                     <div class="table-responsive">
                         <table class="table table-borderless">
                             <thead>
@@ -37,30 +44,36 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for (int i = 0; i < Model.OTPSettings.Count; i++)
+                                @for (int i = 0; i < Model.Count; i++)
                                 {
                                     <tr class="border-bottom">
                                         <td class="align-middle py-3">
-                                            <input type="hidden" asp-for="OTPSettings[i].OTPId" />
-                                            <input type="hidden" asp-for="OTPSettings[i].OTPAction" />
-                                            <span class="text-muted">@Model.OTPSettings[i].OTPAction</span>
+                                            <input type="hidden" name="[@i].OTPId" value="@Model[i].OTPId" />
+                                            <input type="hidden" name="[@i].OTPAction" value="@Model[i].OTPAction" />
+                                            <span class="text-muted">@Model[i].OTPAction</span>
                                         </td>
                                         <td class="align-middle py-3">
                                             <div class="row">
                                                 <div class="col-6 text-center">
                                                     <div class="form-check d-inline-block">
                                                         <input type="checkbox"
-                                                               asp-for="OTPSettings[i].Email"
+                                                               name="[@i].Email"
+                                                               value="true"
+                                                               @(Model[i].Email ? "checked" : "")
                                                                class="form-check-input"
                                                                style="transform: scale(1.2);">
+                                                        <input type="hidden" name="[@i].Email" value="false" />
                                                     </div>
                                                 </div>
                                                 <div class="col-6 text-center">
                                                     <div class="form-check d-inline-block">
                                                         <input type="checkbox"
-                                                               asp-for="OTPSettings[i].Whatsapp"
+                                                               name="[@i].Whatsapp"
+                                                               value="true"
+                                                               @(Model[i].Whatsapp ? "checked" : "")
                                                                class="form-check-input"
                                                                style="transform: scale(1.2);">
+                                                        <input type="hidden" name="[@i].Whatsapp" value="false" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -71,9 +84,13 @@
                         </table>
                     </div>
 
-                    <div class="d-flex justify-content-end mt-4">
-                        <button type="submit" class="btn btn-primary px-4">
-                            <i class="fas fa-save me-2"></i>Update
+                    <div class="mt-4 d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Choose your preferred update method above
+                        </small>
+                        <button type="button" class="btn btn-outline-secondary" onclick="refreshSettings()">
+                            <i class="fas fa-refresh me-1"></i>Refresh
                         </button>
                     </div>
                 </form>
@@ -82,15 +99,33 @@
     </div>
 </div>
 
-@section Scripts {
-    <script>
-        // Add some interactive feedback
-        $(document).ready(function() {
-            $('input[type="checkbox"]').change(function() {
-                $(this).closest('tr').addClass('table-warning').delay(200).queue(function() {
-                    $(this).removeClass('table-warning').dequeue();
-                });
-            });
+<script>
+    function updateWithEF() {
+        submitForm('@Url.Action("Update", "OTPSetting")');
+    }
+
+    function updateWithSQL() {
+        submitForm('@Url.Action("UpdateWithSQL", "OTPSetting")');
+    }
+
+    function submitForm(actionUrl) {
+        const form = document.getElementById('otpForm');
+        form.action = actionUrl;
+        form.method = 'POST';
+        form.submit();
+    }
+
+    function refreshSettings() {
+        window.location.reload();
+    }
+
+    // Auto-dismiss toasts after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        const toasts = document.querySelectorAll('.toast');
+        toasts.forEach(function(toast) {
+            setTimeout(function() {
+                toast.style.display = 'none';
+            }, 5000);
         });
-    </script>
-}
+    });
+</script>
